@@ -25,6 +25,11 @@
         --transition-fast: 0.3s ease;
         --transition-normal: 0.5s ease;
         --transition-slow: 1s ease;
+        --tertiary-glow: rgba(255, 202, 44, 0.5);
+        --accent: #ff00ff;
+        --accent-glow: rgba(255, 0, 255, 0.5);
+        --submission-card-bg: rgba(128, 0, 255, 0.08);
+        --submission-card-border: rgba(170, 0, 255, 0.8);
       }
 
       * {
@@ -500,6 +505,13 @@
         opacity: 0;
         transform: translateY(30px);
         cursor: pointer;
+        transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        transform-style: preserve-3d;
+        perspective: 1000px;
+      }
+
+      .card.magnetic {
+        transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
       }
 
       .card.visible {
@@ -1174,6 +1186,74 @@
           display: none;
         }
       }
+
+      /* Add the new Submissions Section styles */
+      #submissions {
+        padding: 120px 20px;
+        position: relative;
+        overflow: hidden;
+        background: radial-gradient(ellipse at top, rgba(128, 0, 255, 0.1) 0%, transparent 70%);
+      }
+
+      .submission-card {
+        background: linear-gradient(145deg, var(--submission-card-bg) 0%, rgba(10, 10, 20, 0.5) 100%);
+        backdrop-filter: blur(4px);
+        box-shadow: 0 8px 32px rgba(128, 0, 255, 0.1);
+        border-radius: 18px;
+        padding: 30px;
+        text-align: center;
+        transition: transform var(--transition-fast),
+          box-shadow var(--transition-fast), background var(--transition-normal);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+        opacity: 0;
+        transform: translateY(30px);
+        cursor: pointer;
+        transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        transform-style: preserve-3d;
+        perspective: 1000px;
+      }
+
+      .submission-card.magnetic {
+        transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+
+      .submission-card.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .submission-card:hover {
+        background: linear-gradient(145deg, rgba(128, 0, 255, 0.12) 0%, rgba(10, 10, 20, 0.6) 100%);
+        box-shadow: 0 20px 40px rgba(128, 0, 255, 0.3);
+        transform: translateY(-15px);
+        z-index: 1;
+      }
+
+      .submission-card:active {
+        transform: scale(0.98);
+      }
+
+      .submission-card .profile-img-container {
+        border-color: var(--accent);
+        box-shadow: 0 0 20px var(--accent-glow);
+      }
+
+      .submission-card h3 {
+        color: var(--accent);
+      }
+
+      .submission-card h3::after {
+        background: var(--accent);
+      }
+
+      .submission-card:hover h3::after {
+        transform: scaleX(1);
+      }
     </style>
   </head>
   <body>
@@ -1395,6 +1475,43 @@
             });
           });
         }
+
+        // Add Magnetic Effect
+        function addMagneticEffect(elements) {
+          elements.forEach(element => {
+            element.addEventListener('mousemove', e => {
+              const rect = element.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const y = e.clientY - rect.top;
+              
+              const centerX = rect.width / 2;
+              const centerY = rect.height / 2;
+              
+              const deltaX = (x - centerX) / centerX;
+              const deltaY = (y - centerY) / centerY;
+              
+              element.style.transform = `
+                perspective(1000px)
+                rotateX(${deltaY * 10}deg)
+                rotateY(${deltaX * 10}deg)
+                translateZ(20px)
+              `;
+              
+              element.classList.add('magnetic');
+            });
+            
+            element.addEventListener('mouseleave', () => {
+              element.style.transform = '';
+              element.classList.remove('magnetic');
+            });
+          });
+        }
+
+        // Initialize magnetic effect on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+          addMagneticEffect(document.querySelectorAll('.card, .submission-card'));
+        });
+
       </script>
     </section>
 
