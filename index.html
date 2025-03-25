@@ -441,25 +441,79 @@
       #countdown {
         font-family: "Orbitron", sans-serif;
         font-size: 1.5rem;
-        color: var(--tertiary);
-        text-shadow: 0 0 10px var(--tertiary);
         text-align: center;
         margin-top: 30px;
         padding: 20px;
         background: rgba(255, 202, 44, 0.1);
         border-radius: 10px;
         border: 1px solid rgba(255, 202, 44, 0.3);
-        animation: flicker 1s infinite alternate;
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
       }
 
-      @keyframes flicker {
-        0%,
-        100% {
-          opacity: 1;
+      .time-unit {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+        border: 1px solid rgba(255, 202, 44, 0.2);
+        min-width: 100px;
+      }
+
+      .time-unit .value {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--tertiary);
+        text-shadow: 
+          0 0 10px var(--tertiary-glow),
+          0 0 20px var(--tertiary-glow);
+        position: relative;
+        animation: timeGlow 2s infinite alternate;
+      }
+
+      .time-unit .label {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        color: rgba(255, 202, 44, 0.7);
+        margin-top: 5px;
+      }
+
+      .time-unit::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        background: linear-gradient(45deg, 
+          transparent, 
+          rgba(255, 202, 44, 0.3), 
+          transparent
+        );
+        border-radius: inherit;
+        z-index: -1;
+        animation: borderPulse 3s infinite linear;
+      }
+
+      @keyframes timeGlow {
+        0%, 100% { 
+          text-shadow: 
+            0 0 10px var(--tertiary-glow),
+            0 0 20px var(--tertiary-glow);
         }
-        50% {
-          opacity: 0.8;
+        50% { 
+          text-shadow: 
+            0 0 15px var(--tertiary-glow),
+            0 0 30px var(--tertiary-glow),
+            0 0 45px var(--tertiary-glow);
         }
+      }
+
+      @keyframes borderPulse {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 0.1; }
       }
 
       /* Judges and Sponsors Sections */
@@ -1379,6 +1433,160 @@
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(128, 0, 255, 0.2);
       }
+
+      /* Enhanced Cyberpunk CTA */
+      #cta {
+        padding: 100px 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(-45deg, 
+          rgba(0,191,255,0.1), 
+          rgba(0,0,0,0.2), 
+          rgba(0,255,0,0.1), 
+          rgba(10,10,20,0.2)
+        );
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        border-radius: 20px;
+        margin-bottom: 36px;
+        border: 1px solid rgba(0, 191, 255, 0.2);
+        box-shadow: 
+          0 0 30px rgba(0, 191, 255, 0.1),
+          inset 0 0 30px rgba(0, 191, 255, 0.1);
+      }
+
+      #cta h2 {
+        font-family: "Orbitron", sans-serif;
+        font-size: clamp(2rem, 5vw, 2.5rem);
+        color: var(--primary);
+        text-shadow: 
+          0 0 10px var(--primary-glow),
+          0 0 20px var(--primary-glow),
+          0 0 40px var(--primary-glow);
+        margin-bottom: 20px;
+        animation: glitchText 3s infinite;
+        position: relative;
+      }
+
+      @keyframes glitchText {
+        0%, 100% { 
+          transform: none; 
+          text-shadow: 
+            0 0 10px var(--primary-glow),
+            0 0 20px var(--primary-glow),
+            0 0 40px var(--primary-glow);
+        }
+        98.5% { 
+          transform: translate(-2px, 1px);
+          text-shadow: 
+            -2px 0 var(--secondary),
+            2px 2px var(--accent);
+        }
+        99% { 
+          transform: translate(2px, -1px);
+          text-shadow: 
+            2px 0 var(--accent),
+            -2px -2px var(--secondary);
+        }
+        99.5% { 
+          transform: translate(-2px, 1px);
+          text-shadow: 
+            -2px 0 var(--primary),
+            2px 2px var(--secondary);
+        }
+      }
+
+      #cta h2::before,
+      #cta h2::after {
+        content: 'Ready to Create?';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        clip: rect(0, 900px, 0, 0);
+        animation: glitch-anim 4s infinite linear alternate-reverse;
+      }
+
+      #cta h2::before {
+        text-shadow: -2px 0 var(--accent);
+        animation: glitch-anim-1 5s infinite linear alternate-reverse;
+      }
+
+      #cta h2::after {
+        text-shadow: 2px 0 var(--secondary);
+        animation: glitch-anim-2 3s infinite linear alternate-reverse;
+      }
+
+      @keyframes glitch-anim-1 {
+        0% { clip: rect(20px, 900px, 80px, 0); }
+        20% { clip: rect(40px, 900px, 30px, 0); }
+        40% { clip: rect(60px, 900px, 50px, 0); }
+        60% { clip: rect(10px, 900px, 70px, 0); }
+        80% { clip: rect(30px, 900px, 20px, 0); }
+        100% { clip: rect(50px, 900px, 40px, 0); }
+      }
+
+      @keyframes glitch-anim-2 {
+        0% { clip: rect(30px, 900px, 60px, 0); }
+        20% { clip: rect(50px, 900px, 20px, 0); }
+        40% { clip: rect(70px, 900px, 40px, 0); }
+        60% { clip: rect(20px, 900px, 50px, 0); }
+        80% { clip: rect(40px, 900px, 30px, 0); }
+        100% { clip: rect(60px, 900px, 10px, 0); }
+      }
+
+      #cta .btn {
+        font-size: 1.5rem;
+        padding: 15px 40px;
+        background: rgba(0, 255, 0, 0.1);
+        border: 2px solid var(--secondary);
+        transform-origin: center;
+        animation: buttonPulse 3s infinite alternate;
+        margin-bottom: 25px;
+        position: relative;
+        overflow: visible;
+      }
+
+      #cta .btn::before {
+        content: '';
+        position: absolute;
+        top: -2px; right: -2px; bottom: -2px; left: -2px;
+        background: linear-gradient(45deg, 
+          var(--secondary), 
+          var(--primary), 
+          var(--accent), 
+          var(--secondary)
+        );
+        border-radius: inherit;
+        z-index: -1;
+        animation: borderGlow 3s linear infinite;
+        filter: blur(14px);
+        opacity: 0.7;
+      }
+
+      @keyframes buttonPulse {
+        0% { 
+          transform: scale(1);
+          box-shadow: 
+            0 0 20px var(--secondary-glow),
+            0 0 40px var(--secondary-glow),
+            inset 0 0 10px var(--secondary-glow);
+        }
+        100% { 
+          transform: scale(1.05);
+          box-shadow: 
+            0 0 30px var(--secondary-glow),
+            0 0 60px var(--secondary-glow),
+            inset 0 0 20px var(--secondary-glow);
+        }
+      }
+
+      @keyframes borderGlow {
+        0%, 100% { opacity: 0.7; }
+        50% { opacity: 0.3; }
+      }
     </style>
   </head>
   <body>
@@ -1441,27 +1649,40 @@
         <div id="countdown" class="fade-in"></div>
       </div>
       <script>
-        // Countdown Timer
+        // Updated Countdown Timer
         function updateCountdown() {
           const deadline = new Date("2025-04-01T23:59:00Z");
           const now = new Date();
           const diff = deadline - now;
 
           if (diff <= 0) {
-            document.getElementById("countdown").textContent = "Jam has ended!";
+            document.getElementById("countdown").innerHTML = "<div class='time-unit'><div class='value'>JAM</div><div class='label'>ended</div></div>";
             return;
           }
 
           const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-          const hours = Math.floor(
-            (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-          );
+          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
           const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
           const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-          document.getElementById(
-            "countdown"
-          ).textContent = `${days}d, ${hours}h, ${minutes}m, ${seconds}s remaining`;
+          document.getElementById("countdown").innerHTML = `
+            <div class="time-unit">
+              <div class="value">${days}</div>
+              <div class="label">days</div>
+            </div>
+            <div class="time-unit">
+              <div class="value">${hours}</div>
+              <div class="label">hours</div>
+            </div>
+            <div class="time-unit">
+              <div class="value">${minutes}</div>
+              <div class="label">min</div>
+            </div>
+            <div class="time-unit">
+              <div class="value">${seconds}</div>
+              <div class="label">sec</div>
+            </div>
+          `;
         }
         updateCountdown();
         setInterval(updateCountdown, 1000);
